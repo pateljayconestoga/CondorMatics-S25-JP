@@ -7,7 +7,7 @@ resource "aws_lb" "nginx_lb" {
   load_balancer_type = "application"
 
   security_groups = [aws_security_group.load_balancer_security_group.id]
-  subnets         = [aws_subnet.public_subnet.id]
+  subnets         = [aws_subnet.public_subnet.id, aws_subnet.public_subnet_2.id]
 
   tags = {
     name = "PROG8830_LB"
@@ -35,9 +35,14 @@ resource "aws_lb_target_group" "nginx_target_group" {
 }
 
 # aws_lb_target_group_attachment
-resource "aws_lb_target_group_attachment" "name" {
+resource "aws_lb_target_group_attachment" "nginx1" {
   target_group_arn = aws_lb_target_group.nginx_target_group.arn
   target_id        = aws_instance.nginx1.id
   port             = 80
+}
 
+resource "aws_lb_target_group_attachment" "nginx2" {
+  target_group_arn = aws_lb_target_group.nginx_target_group.arn
+  target_id        = aws_instance.nginx2.id
+  port             = 80
 }
