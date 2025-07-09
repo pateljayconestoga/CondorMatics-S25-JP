@@ -41,3 +41,6 @@ jobs:
       
       - name: Applying Terraform Changes
         run: terraform apply -var="core_count=1" -var="thread_count=1" -auto-approve
+
+      - name: Applying Terraform Changes
+        run: terraform destroy -var="core_count=1" -var="thread_count=1" -auto-approve
