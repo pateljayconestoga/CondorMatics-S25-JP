@@ -1,0 +1,43 @@
+# trigger - when it should happen
+
+name: Terraform CI - CD Pipeline Automation
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  provision-infrastructure-using-terraform:
+    name: provision-infrastructure-using-terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repostiory
+        uses: actions/checkout@v2
+
+      - name: Setting Up the Terraform Versions
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.12.2
+
+      - name: Initializing Terraform
+        run: terraform init
+
+      - name: Terraform format
+        run: terraform fmt
+      
+      - name: Validating the Infrastructure
+        run: terraform validate
+      
+      - name: Planning Terraform Changes
+        run: terraform plan -var="core_count=1" -var="thread_count=1"
+      
+      - name: Applying Terraform Changes
+        run: terraform apply -var="core_count=1" -var="thread_count=1" -auto-approve

@@ -46,7 +46,7 @@ resource "aws_instance" "nginx1" {
 
 resource "aws_instance" "nginx2" {
   ami           = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
   cpu_options {
     core_count       = var.core_count
