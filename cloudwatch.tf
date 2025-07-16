@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_dashboard" "condormatics-dashboard" {
   dashboard_name = "condormatics-dashboard"
   dashboard_body = jsonencode({
-    widgets = [
+    widget = [
       {
         type   = "metric"
         x      = 0
